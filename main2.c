@@ -60,9 +60,9 @@ int main(int argc, char **argv) {
             char *tmp = line2;
             int j = 0;
             while (*tmp) {
+                fprintf(E, "read j %d, i %d, *tmp %c\n", j, i, *tmp);
                 table[i * r + j] = *tmp;
                 tmp++, j++;
-                /*fprintf(E, "read j %d, i %d\n", j, i);*/
             }
 
             /*fprintf(E, "'%s'\n", line2);*/
