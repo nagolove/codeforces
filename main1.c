@@ -8,12 +8,20 @@
 
 static FILE *E;
 
+struct S {
+    int val, rep;
+};
+
+int _cmp_map(const void *a, const void *b) {
+    const struct S *_a = a, *_b = b;
+    return _b->rep - _a->rep;
+}
 
 void task(char *line1, char *line2) {
     fprintf(E, "'%s', '%s'\n", line1, line2);
     int n = 0, k = 0;
     sscanf(line1, "%d %d\n", &n, &k);
-    int nums[n];
+    int nums[n + 1];
     memset(nums, 0, sizeof(nums));
 
     char *token = strtok(line2, " ");
@@ -26,11 +34,72 @@ void task(char *line1, char *line2) {
         token = strtok(NULL, " ");
     }
 
-    fprintf(stderr, "n %d, k %d\n", n, k);
+    //fprintf(stderr, "n %d, k %d\n", n, k);
+    fprintf(stderr, "nums:\n");
     for (int i = 0; i < n; i++) {
         fprintf(stderr, "%d ", nums[i]);
     }
     fprintf(stderr, "\n");
+ //   */
+
+    struct S map[n + 2];
+    struct S *order = &map[n + 1];
+
+    int N = n;
+
+    memset(map, 0, sizeof(map));
+    for (int i = 0; i < n; i++) {
+        //fprintf(E, "%d\n", nums[i]);
+        map[nums[i]].val = nums[i];
+        map[nums[i]].rep++;
+    }
+
+    int total_cur = 0, total_prev = 0;
+
+    for (int i = 0; i < n; i++) {
+        total_prev += map[i].rep;
+    }
+
+    while (1) {
+        qsort(map, n, sizeof(map[0]), _cmp_map);
+
+        if (map[0].rep >= k) {
+            map[0].rep -= k;
+
+            int i;
+            for (i = 1; i < n; i++) {
+                if (map[i].rep < k)
+                    break;
+            }
+
+            order->val = map[i].val;
+            order->rep = k - 1;
+        }
+
+        fprintf(E, "map:\n");
+        for (int i = 0; i < n; i++) {
+            fprintf(E, "val %d, rep %d\n", map[i].val, map[i].rep);
+        }
+        fprintf(E, "\n");
+
+        total_cur = 0;
+        for (int i = 0; i < n; i++) {
+            total_cur += map[i].rep;
+        }
+
+        if (total_cur == total_prev)
+            break;
+
+        total_prev = total_cur;
+    }
+
+    /*
+    for (int i = 0; i < n; i++) {
+        fprintf(E, "val %d, rep %d\n", map[i].val, map[i].rep);
+    }
+    fprintf(E, "\n");
+    */
+    printf("ANS %d", total_cur);
 }
 
 
@@ -39,7 +108,7 @@ int main(int argc, char **argv) {
 
 #ifndef ONLINE_JUDGE 
     freopen("input1.txt", "rt", stdin); 
-    freopen("output.txt", "wt", stdout); 
+    freopen("output1.txt", "wt", stdout); 
 #endif
 
     size_t max_line_len = 128;
