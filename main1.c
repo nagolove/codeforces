@@ -24,6 +24,11 @@ void task(char *line1, char *line2) {
     int nums[n + 1];
     memset(nums, 0, sizeof(nums));
 
+    if (k > n) {
+        printf("1\n");
+        return;
+    }
+
     char *token = strtok(line2, " ");
     int i = 0;
     while(token) {
@@ -42,7 +47,7 @@ void task(char *line1, char *line2) {
     fprintf(stderr, "\n");
  //   */
 
-    struct S map[n + 2];
+    struct S map[100 + 2];
     struct S *order = &map[n + 1];
 
     int N = n;
@@ -63,13 +68,20 @@ void task(char *line1, char *line2) {
     while (1) {
         qsort(map, n, sizeof(map[0]), _cmp_map);
 
+        if (map[0].rep < k) {
+            fprintf(E, "map[0].rep < %d\n", k);
+            printf("%d\n", total_prev);
+            return;
+        }
+
         if (map[0].rep >= k) {
             map[0].rep -= k;
 
-            int i;
-            for (i = 1; i < n; i++) {
-                if (map[i].rep < k)
+            int i = 1;
+            while (i < n) {
+                if (map[i].rep < k) 
                     break;
+                i++;
             }
 
             order->val = map[i].val;
@@ -87,8 +99,10 @@ void task(char *line1, char *line2) {
             total_cur += map[i].rep;
         }
 
-        if (total_cur == total_prev)
+        if (total_cur == total_prev) {
+            fprintf(E, "break, total_cur %d\n", total_cur);
             break;
+        }
 
         total_prev = total_cur;
     }
@@ -99,7 +113,7 @@ void task(char *line1, char *line2) {
     }
     fprintf(E, "\n");
     */
-    printf("ANS %d", total_cur);
+    printf("%d", total_cur);
 }
 
 
