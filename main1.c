@@ -121,8 +121,8 @@ int main(int argc, char **argv) {
     E = stderr;
 
 #ifndef ONLINE_JUDGE 
-    freopen("input1.txt", "rt", stdin); 
-    freopen("output1.txt", "wt", stdout); 
+    freopen("input2.txt", "rt", stdin); 
+    freopen("output2.txt", "wt", stdout); 
 #endif
 
     size_t max_line_len = 128;
