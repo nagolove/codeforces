@@ -17,13 +17,31 @@ int _cmp_map(const void *a, const void *b) {
     return _b->rep - _a->rep;
 }
 
-void task(int *t, int r, int c) {
-    fprintf(E, "task\n");
-    for (int i = 0; i < r; i++) {
-        for (int j = 0; j < c; j++)
-            fprintf(E, "%c", t[i * r + c]);
-        fprintf(E, "\n");
+void task(int a, int b, int c, int d) {
+    int arr[13] = {};
+    size_t arr_len = sizeof(arr) / sizeof(arr[0]);
+
+    int t = a;
+    while (t < b) {
+        arr[t] = 1;
+        t++;
+        if (t > 12)
+            t = t % 12;
     }
+
+    /*
+    t = c;
+    while (t < d) {
+        arr[t] = 1;
+        t++;
+        if (t > 12)
+            t = t % 12;
+    }
+    */
+
+    for (int i = 0; i < arr_len; i++) 
+        printf("%d ", arr[i]);
+    printf("\n");
 }
 
 
@@ -31,8 +49,8 @@ int main(int argc, char **argv) {
     E = stderr;
 
 #ifndef ONLINE_JUDGE 
-    freopen("input2.txt", "rt", stdin); 
-    freopen("output2.txt", "wt", stdout); 
+    freopen("input3.txt", "rt", stdin); 
+    freopen("output3.txt", "wt", stdout); 
 #endif
 
     size_t max_line_len = 128;
@@ -44,34 +62,12 @@ int main(int argc, char **argv) {
     fprintf(stderr, "num %d\n", num);
 //#endif
     for (int i = 0; i < num; ++i) {
-        int r, c;
-
-        scanf("%d %d\n", &r, &c);
-        fprintf(E, "r %d, c %d\n", r, c);
-        int *table = calloc(r * c * 2, sizeof(table[0]));
-
-        size_t len;
-        for (int i = 0; i < r; i++) {
-            fgets(line2, max_line_len, stdin);
-
-            len = strlen(line2);
-            line2[len - 1] = 0;
-
-            char *tmp = line2;
-            int j = 0;
-            while (*tmp) {
-                fprintf(E, "read j %d, i %d, *tmp %c\n", j, i, *tmp);
-                table[i * r + j] = *tmp;
-                tmp++, j++;
-            }
-
-            /*fprintf(E, "'%s'\n", line2);*/
-
-            //printf("%s\n", line);
-        }
-        
-        task(table, r, c);
-        free(table);
+        /*fgets(line1, max_line_len, stdin);*/
+        /*line1[strlen(line1) - 1] = 0;*/
+        /*fprintf(E, "line1: '%s'\n", line1);*/
+        int a = 0, b = 0, c = 0, d = 0;
+        scanf("%d %d %d %d", &a, &b, &c, &d);
+        task(a, b, c, d);
     }
 
     return EXIT_SUCCESS;
